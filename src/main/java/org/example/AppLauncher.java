@@ -16,10 +16,13 @@ public class AppLauncher {
         taskManager.showMenu();
 
         while (action != Action.valueOf("exit".toUpperCase())) {
+            System.out.print("Enter command: ");
+
             try {
                 action = Action.valueOf(scanner.nextLine().toUpperCase());
             } catch (IllegalArgumentException exception) {
                 System.out.println("Incorrect input, try another command ");
+                continue;
             }
 
             switch (Objects.requireNonNull(action)) {
