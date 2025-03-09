@@ -2,6 +2,7 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class AppLauncher {
@@ -11,48 +12,26 @@ public class AppLauncher {
         List<Task> taskList = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
         TaskManager taskManager = new TaskManager();
-        String action = "";
+        Action action = null;
         taskManager.showMenu();
 
-        while (!action.equals("exit")) {
-            action = scanner.nextLine();
+        while (action != Action.valueOf("exit".toUpperCase())) {
+            try {
+                action = Action.valueOf(scanner.nextLine().toUpperCase());
+            } catch (IllegalArgumentException exception) {
+                System.out.println("Incorrect input, try another command ");
+            }
 
-            switch (action.toLowerCase()) {
-
-                case "add":
-                    taskManager.addNewTask(taskList);
-                    break;
-
-                case "list":
-                    System.out.println(taskList);
-                    break;
-
-                case "edit":
-                    taskManager.editTask(taskList);
-                    break;
-
-                case "delete":
-                    taskManager.removeTask(taskList);
-                    break;
-
-                case "filter":
-                    taskManager.filterTasks(taskList);
-                    break;
-
-                case "sort":
-                    taskManager.sortTasks(taskList);
-                    break;
-
-                case "help":
-                    taskManager.showMenu();
-                    break;
-
-                case "exit":
-                    break;
-
-                default:
-                    System.out.println("Incorrect input, try another command");
-                    break;
+            switch (Objects.requireNonNull(action)) {
+                case ADD -> taskManager.addNewTask(taskList);
+                case LIST -> System.out.println(taskList);
+                case EDIT -> taskManager.editTask(taskList);
+                case DELETE -> taskManager.removeTask(taskList);
+                case FILTER -> taskManager.filterTasks(taskList);
+                case SORT -> taskManager.sortTasks(taskList);
+                case HELP -> taskManager.showMenu();
+                case EXIT -> System.out.println("Good bye!");
+                default -> System.out.println("Incorrect input, try another command");
             }
         }
         scanner.close();

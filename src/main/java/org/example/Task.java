@@ -9,20 +9,11 @@ import java.time.*;
 @ToString
 public class Task {
 
-    @Getter
-    @AllArgsConstructor
-     enum TaskStatus {
-        TODO(1),
-        IN_PROGRESS(2),
-        DONE(3);
-
-        private final int priority;
-    }
-
     private String name;
     private String description;
     private TaskStatus status;
-    private int id;
+    private final int id;
+    private static int idCounter = 0;
     private LocalDate deadline;
 
     public Task (String name, String description, LocalDate deadline) {
@@ -34,6 +25,6 @@ public class Task {
     }
 
     private int generateID() {
-        return (int) (Math.random() * 1000);
+        return ++idCounter;
     }
 }
